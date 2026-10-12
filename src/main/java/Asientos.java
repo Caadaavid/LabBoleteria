@@ -5,6 +5,7 @@ public class Asientos {
     private String fila;
     private String numero;
     private Double precio;
+    private boolean disponible = true;
 
     public Asientos(String idEvento, String idAsiento, String localidad, String fila, String numero, Double precio) {
         this.idEvento = idEvento;
@@ -41,7 +42,13 @@ public class Asientos {
 
     @Override
     public String toString(){
-        return "Asiento: [ID Evento: " + idEvento + " ID Asiento: " + idAsiento + " localidad: " + localidad +
-                " fila: " + fila + " número: " + numero + " precio: " + precio + "]";
+        if(disponible){
+            return "Asiento: [ID Evento: " + idEvento + " ID Asiento: " + idAsiento + " localidad: " + localidad +
+                    " fila: " + fila + " número: " + numero + " precio: " + precio + " Disponible]";
+        } else{
+            return "Asiento: [ID Evento: " + idEvento + " ID Asiento: " + idAsiento + " localidad: " + localidad +
+                    " fila: " + fila + " número: " + numero + " precio: " + precio + " Reservado]";
+        }
+
     }
 }
