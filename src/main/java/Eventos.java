@@ -41,8 +41,8 @@ public class Eventos {
 
     @Override
     public String toString(){
-        return "Evento [ID:" + id + "Nombre:" + nombre + "fecha:"+ fecha +
-               "hora: " + hora + "ubicación:" + lugar + "Tipo de evento:" + tipoEvento + "]";
+        return "Evento [ID: " + id + " Nombre: " + nombre + " fecha: "+ fecha +
+               " hora: " + hora + " ubicación: " + lugar + " Tipo de evento: " + tipoEvento + "]";
     }
 
 

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LectorAsientosCSV {
-    public static void main(String[] args){
-        String path = "src/data/asientos.csv";
+    public List<Asientos> cargarAsientos(String path) {
         String linea;
         List<Asientos> listaAsientos = new ArrayList<>();
 
@@ -14,16 +13,19 @@ public class LectorAsientosCSV {
 
             while ((linea = lector.readLine()) != null){
                 String[] datos = linea.split(";");
-                String idEvento = datos[1].trim();
-                String idAsiento = datos[2].trim();
-                String localidad = datos[3].trim();
-                String fila = datos[4].trim();
-                String numero = datos[5].trim();
-                Double precio = Double.parseDouble(datos[6]);
+                String idEvento = datos[0].trim();
+                String idAsiento = datos[1].trim();
+                String localidad = datos[2].trim();
+                String fila = datos[3].trim();
+                String numero = datos[4].trim();
+                Double precio = Double.parseDouble(datos[5]);
 
+                Asientos asiento = new Asientos(idEvento, idAsiento, localidad, fila, numero, precio);
+                listaAsientos.add(asiento);
             }
         } catch (IOException e){
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
+        return listaAsientos;
     }
 }
