@@ -41,7 +41,7 @@ public class Asientos {
 
     @Override
     public String toString(){
-        return "Asiento: [ID Evento:" + idEvento + "ID Asiento:" + idAsiento + "localidad:" + localidad +
-                "fila:" + fila + "número:" + numero + "precio:" + precio + "]";
+        return "Asiento: [ID Evento: " + idEvento + " ID Asiento: " + idAsiento + " localidad: " + localidad +
+                " fila: " + fila + " número: " + numero + " precio: " + precio + "]";
     }
 }
