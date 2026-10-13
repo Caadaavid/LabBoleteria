@@ -22,7 +22,10 @@ public class LectorEventosCSV {
                 Eventos evento = new Eventos(idEvento, nombre, fecha, hora, lugar, tipoEvento);
                 listaEventos.add(evento);
             }
+            GestionarLogs.registrarLog("INFO", "Carga exitosa de eventos. Total cargados: "
+                    + listaEventos.size());
         } catch (IOException e){
+            GestionarLogs.registrarLog("ERROR", "Error al leer el archivo de eventos" + e.getMessage());
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
         return listaEventos;

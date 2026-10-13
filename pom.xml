@@ -39,6 +39,14 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Otra para generar el codigo QR -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.3</version>
+            <scope>compile</scope>
+        </dependency>
+
 
         <!-- Para manipular los .json -->
         <dependency>

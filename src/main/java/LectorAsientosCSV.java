@@ -23,7 +23,10 @@ public class LectorAsientosCSV {
                 Asientos asiento = new Asientos(idEvento, idAsiento, localidad, fila, numero, precio);
                 listaAsientos.add(asiento);
             }
+            GestionarLogs.registrarLog("INFO", "Carga exitosa de asientos. Total cargados: "
+                    + listaAsientos.size());
         } catch (IOException e){
+            GestionarLogs.registrarLog("ERROR", "Error al leer el archivo de asientos" + e.getMessage());
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
         return listaAsientos;
