@@ -2,8 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 class GestorBoleteria {
+    private List<Eventos> listaEventos;
+    private List<Asientos> listaAsientos;
+    private static int idCompra = 0;
 
-     public List<Asientos> filtrarAsientos (List<Asientos> todosLosAsientos, String idEvento){
+    public GestorBoleteria(List<Eventos> listaEventos, List<Asientos> listaAsientos) {
+        this.listaEventos = listaEventos;
+        this.listaAsientos = listaAsientos;
+    }
+
+    public List<Asientos> filtrarAsientos (List<Asientos> todosLosAsientos, String idEvento){
          List<Asientos> filtrados = new ArrayList<>();
 
          for (Asientos a : todosLosAsientos){
@@ -12,37 +20,111 @@ class GestorBoleteria {
              }
          }
          return filtrados;
+    }
+    //==================================================================================================
+    //NO OLVIDAR REEMPLAZAR EL VOID POR STRING
+    //PUSE VOID PORQUE ME DABA TOC QUE SIEMPRE
+    //APARECIA UN ERROR PORQUE EL METODO NO
+    //TIENE IMPLEMENTADO UN RETURN TODAVIA
+    //==================================================================================================
+    public void comprarAsientos (String idEvento, String doc, String name, String email, List<String> boletoSelected){
+         validarCampos(idEvento, "ID del evento");
+         validarCampos(doc, "Documento de identidad");
+         validarCampos(name, "Nombre");
+         validarCampos(email, "Correo electronico");
+
+         if (boletoSelected == null || boletoSelected.isEmpty()){
+             throw new IllegalArgumentException("Debe seleccionar al menos un asiento para la compra");
+         }
+
+         boolean eventExist = false;
+         for (Eventos e : listaEventos){
+             if(idEvento.equalsIgnoreCase(e.getId())){
+                 eventExist = true;
+                 break;
+             }
+         }
+
+         if(!eventExist){
+             GestionarLogs.registrarLog("ERROR", "El evento con ID: " + idEvento + " no existe");
+             throw new IllegalArgumentException("El ID ingresado no existe en el sistema");
+         }
+
+         for (String idBuscado : boletoSelected){
+             boolean seatFound = false;
+
+             for (Asientos a : listaAsientos){
+                if (a.getIdEvento().equalsIgnoreCase(idEvento) && a.getIdAsiento().equalsIgnoreCase(idBuscado)){
+                    seatFound = true;
+
+                    if (!a.isDisponible()){
+                        GestionarLogs.registrarLog("ERROR", "Intento de comprar un asiento no disponible "
+                                + idBuscado);
+                        throw new IllegalArgumentException("El asiento " + idBuscado + " ya esta ocupado.");
+                    }
+                    break;
+                }
+             }
+             if (!seatFound){
+                 GestionarLogs.registrarLog("ERROR", "El asiento " + idBuscado
+                         + " no pertenece al evento " + idEvento + ".");
+                 throw new IllegalArgumentException("El asiento " + idBuscado
+                         + " no pertenece al evento " + idEvento + ".");
+             }
+         }
+
+         double[] costos = calcularCostos(boletoSelected);
+         double subtotal = costos[0];
+         double servicio = costos[1];
+         double total = costos[2];
+
+         actualizarEstadoAsientos(idEvento, boletoSelected);
+
+
+         idCompra += 10;
+         GestionarLogs.registrarLog("COMPRA", "Compra realizada con exito, ID de compra: " + idCompra);
+
+         Compra compra = new Compra(idCompra, idEvento, doc, name, email,
+                 boletoSelected, subtotal, servicio, total);
+
+         compra.registrarCompra(compra);
+         GenerarTicket.crearTicketPDF(compra);
+
+    }
+
+     public void validarCampos (String valor, String nombreCampo){
+         if (valor == null || valor.isBlank()){
+             String mensajeError = "El campo " + nombreCampo + " es obligatorio.";
+             GestionarLogs.registrarLog("ERROR", mensajeError);
+             throw new IllegalArgumentException(mensajeError);
+         }
      }
 
-     public String comprarAsientos (String idEvento, String doc, String name, String email, List<String> boletoSelected){
-         // TODO 1: Validar datos obligatorios (RF4)
-         // - Comprobar que doc, name y email no estén vacíos.
-         // - Validar el formato del correo electrónico.
-         // - Si falla, lanzar una excepción personalizada (ej. DatosInvalidosException) y registrar el error en auditoria.txt.
+     private double[] calcularCostos(List<String> boletoSelected){
+        Double subtotal = (double) 0;
 
-         // TODO 2: Validar evento y disponibilidad de asientos (RF4)
-         // - Verificar que el idEvento exista.
-         // - Recorrer boletosSeleccionados y confirmar que ningún asiento esté previamente vendido/ocupado.
-         // - Si un asiento ya está ocupado, lanzar excepción y registrar en auditoria.txt.
+        for(String idBuscado : boletoSelected){
+            for (Asientos a : listaAsientos){
+                if (a.getIdAsiento().equalsIgnoreCase(idBuscado)){
+                    subtotal += a.getPrecio();
+                    break;
+                }
+            }
+        }
+        double servicio = subtotal*0.1; //10% del servicio.
+        double total = subtotal + servicio;
 
-         // TODO 3: Actualizar estado de los asientos
-         // - Cambiar el estado de los asientos seleccionados a "ocupado/vendido".
-
-         // TODO 4: Calcular costos de la compra (RF3)
-         // - Sumar el precio individual de cada asiento seleccionado (subtotal).
-         // - Calcular el 10% de cobro por servicio.
-         // - Calcular el total (subtotal + servicio).
-
-         // TODO 5: Persistencia en JSON (RF5)
-         // - Generar un ID único de compra (ej. CMP-001).
-         // - Crear el objeto Compra y guardarlo/actualizarlo en data/compras.json utilizando Gson/Jackson.
-
-         // TODO 6: Generación de Ticket y QR (RF6 y RF7)
-         // - Llamar al servicio de PDF para crear tickets/<idCompra>.pdf.
-         // - Incluir el código QR generado con ZXing conteniendo: ID_COMPRA, TITULAR, EVENTO, ASIENTOS y TOTAL.
-
-         // TODO 7: Auditoría de éxito (RF5)
-         // - Escribir un log exitoso en logs/auditoria.txt indicando la compra realizada y el ID asignado.
+        return new double[]{subtotal, servicio, total};
      }
 
+     private void actualizarEstadoAsientos(String idEvento, List<String> boletoSelected){
+        for (String idBuscado : boletoSelected){
+            for(Asientos a : listaAsientos){
+                if (a.getIdEvento().equalsIgnoreCase(idEvento) && a.getIdAsiento().equalsIgnoreCase(idBuscado)){
+                    a.setDisponible(false);
+                    break;
+                }
+            }
+        }
+     }
 }

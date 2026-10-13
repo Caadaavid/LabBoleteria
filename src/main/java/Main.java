@@ -12,7 +12,7 @@ public class Main {
 
         List<Asientos> asientos = lectorAsientos.cargarAsientos("src/data/asientos.csv");
         List<Eventos> eventos = lectorEventos.cargarEventos("src/data/eventos.csv");
-        GestorBoleteria gestor = new GestorBoleteria();
+        GestorBoleteria gestor = new GestorBoleteria(eventos, asientos);
 
         System.out.println("=== EVENTOS CARGADOS ===");
         for (Eventos e : eventos){
