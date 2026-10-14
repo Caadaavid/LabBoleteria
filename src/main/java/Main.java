@@ -66,13 +66,16 @@ public class Main {
 
                     List<String> boletoSelected = new ArrayList<>();
                     for (int i = 0; i < cboletos; i++){
-                        System.out.println("Ingrese el ID del asiento #" + (i+1) + "que desea comprar: ");
+                        System.out.println("Ingrese el ID del asiento #" + (i+1) + " que desea comprar: ");
                         boletoSelected.add(scanner.nextLine());
                     }
-                    // TODO: Envolver la llamada al gestor en un bloque try-catch
-                    // para capturar las excepciones personalizadas (RF4) que lance el gestor
-                    // y mostrar el mensaje de error al usuario sin romper el ciclo del menú.
-                    gestor.comprarAsientos(idEvento, doc, name, email, boletoSelected);
+
+                    String idGenerado = gestor.comprarAsientos(idEvento, doc, name, email, boletoSelected);
+                    System.out.println("================================2=");
+                    System.out.println("¡Compra procesada con éxito!");
+                    System.out.println("ID de compra: " + idGenerado);
+                    System.out.println("Se ha generado su ticket.");
+                    System.out.println("=================================");
                 break;
             }
             } catch (NumberFormatException e){
