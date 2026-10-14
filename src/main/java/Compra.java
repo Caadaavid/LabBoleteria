@@ -17,15 +17,16 @@ public class Compra {
     private Double cargoServicio;
     private Double total;
 
-    public Compra(int idCompra, String idEvento, String doc, String name, String email, List<String> boletoSelected, double subtotal, double servicio, double total){
+    public Compra(){
     }
 
-    public Compra(String idCompra, String idEvento, String documentoCliente,
+    public Compra(String idCompra, String idEvento, String documentoCliente, String nameCliente,
                   String correoCliente, List<String> asientosComprados,
                   Double subtotal, Double cargoServicio, Double total) {
         this.idCompra = idCompra;
         this.idEvento = idEvento;
         this.documentoCliente = documentoCliente;
+        this.nameCliente = nameCliente;
         this.correoCliente = correoCliente;
         this.asientosComprados = asientosComprados;
         this.subtotal = subtotal;

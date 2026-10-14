@@ -21,13 +21,8 @@ class GestorBoleteria {
          }
          return filtrados;
     }
-    //==================================================================================================
-    //NO OLVIDAR REEMPLAZAR EL VOID POR STRING
-    //PUSE VOID PORQUE ME DABA TOC QUE SIEMPRE
-    //APARECIA UN ERROR PORQUE EL METODO NO
-    //TIENE IMPLEMENTADO UN RETURN TODAVIA
-    //==================================================================================================
-    public void comprarAsientos (String idEvento, String doc, String name, String email, List<String> boletoSelected){
+
+    public String comprarAsientos (String idEvento, String doc, String name, String email, List<String> boletoSelected){
          validarCampos(idEvento, "ID del evento");
          validarCampos(doc, "Documento de identidad");
          validarCampos(name, "Nombre");
@@ -82,14 +77,16 @@ class GestorBoleteria {
 
 
          idCompra += 10;
-         GestionarLogs.registrarLog("COMPRA", "Compra realizada con exito, ID de compra: " + idCompra);
+         String idGenerado = String.valueOf(idCompra);
+         GestionarLogs.registrarLog("COMPRA", "Compra realizada con exito, ID de compra: " + idGenerado);
 
-         Compra compra = new Compra(idCompra, idEvento, doc, name, email,
+         Compra compra = new Compra(idGenerado, idEvento, doc, name, email,
                  boletoSelected, subtotal, servicio, total);
 
          compra.registrarCompra(compra);
          GenerarTicket.crearTicketPDF(compra);
 
+         return String.valueOf(idCompra);
     }
 
      public void validarCampos (String valor, String nombreCampo){

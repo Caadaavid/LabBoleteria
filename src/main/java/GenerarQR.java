@@ -14,7 +14,7 @@ public class GenerarQR {
         String rutaArchivo = "src/qr/" + compra.getIdCompra() + ".png";
 
         String contenidoQR = String.format(
-                "TICKET ID: %s | EVENTO: %s | CLIENTE: %s | ASIONTOS: %s | TOTAL: $%.2f",
+                "TICKET ID: %s | EVENTO: %s | CLIENTE: %s | ASIENTOS: %s | TOTAL: $%.2f",
                 compra.getIdCompra(),
                 compra.getIdEvento(),
                 compra.getNameCliente(),
