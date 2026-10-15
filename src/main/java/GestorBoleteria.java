@@ -5,6 +5,8 @@ class GestorBoleteria {
     private List<Eventos> listaEventos;
     private List<Asientos> listaAsientos;
     private static int idCompra = 0;
+    private static int cboletos1 = 0, cboletos2 = 0, cboletos3 = 0;
+    private static Double ganancias1 = 0.0, ganancias2 = 0.0, ganancias3 = 0.0;
 
     public GestorBoleteria(List<Eventos> listaEventos, List<Asientos> listaAsientos) {
         this.listaEventos = listaEventos;
@@ -86,6 +88,8 @@ class GestorBoleteria {
          compra.registrarCompra(compra);
          GenerarTicket.crearTicketPDF(compra);
 
+         datosReporte(idEvento, boletoSelected, total);
+
          return String.valueOf(idCompra);
     }
 
@@ -124,4 +128,41 @@ class GestorBoleteria {
             }
         }
      }
+
+     private void datosReporte(String idEvento, List<String> boletoSelected, Double total){
+        if (idEvento.equalsIgnoreCase("EV001")){
+            cboletos1 += boletoSelected.size();
+            ganancias1 += total;
+        } else if (idEvento.equalsIgnoreCase("EV002")) {
+            cboletos2 += boletoSelected.size();
+            ganancias2 += total;
+        } else {
+            cboletos3 += boletoSelected.size();
+            ganancias3 += total;
+        }
+     }
+
+    public static int getCboletos1() {
+        return cboletos1;
+    }
+
+    public static int getCboletos2() {
+        return cboletos2;
+    }
+
+    public static int getCboletos3() {
+        return cboletos3;
+    }
+
+    public static Double getGanancias1() {
+        return ganancias1;
+    }
+
+    public static Double getGanancias2() {
+        return ganancias2;
+    }
+
+    public static Double getGanancias3() {
+        return ganancias3;
+    }
 }
