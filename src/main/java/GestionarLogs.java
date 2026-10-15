@@ -11,7 +11,7 @@ public class GestionarLogs {
         String fechaHora = LocalDateTime.now().format(formatoFecha);
 
         try(PrintWriter writer = new PrintWriter(new FileWriter(path, true))){
-            writer.printf("[%s][%s]%sn", fechaHora, tipo.toUpperCase(), mensaje);
+            writer.printf("[%s][%s]%s%n", fechaHora, tipo.toUpperCase(), mensaje);
         }catch (IOException e){
             System.out.println("Error al escribir en auditoria.txt" + e.getMessage());
         }

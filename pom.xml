@@ -47,12 +47,19 @@
             <scope>compile</scope>
         </dependency>
 
-
         <!-- Para manipular los .json -->
         <dependency>
             <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>3.2.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Para generar el gráfico de barras. -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.4</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

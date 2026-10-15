@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -25,6 +26,7 @@ public class Main {
             System.out.println("=== MENÚ DEL SISTEMA ===");
             System.out.println("1. Mostrar asientos de algún evento");
             System.out.println("2. Comprar asientos");
+            System.out.println("3. Generar reporte de ganancias");
             System.out.println("0. Salir");
             System.out.println("Seleccionar opción: ");
 
@@ -35,7 +37,7 @@ public class Main {
             switch (x){
                 case 1:
                     System.out.println("Ingresa ID del evento que quieres filtrar: ");
-                    String idFiltrar = scanner.nextLine();
+                    String idFiltrar = scanner.nextLine().toUpperCase();
                     List<Asientos> asientosFiltrados = gestor.filtrarAsientos(asientos, idFiltrar);
 
                     System.out.println("=== ASIENTOS DEL EVENTO " + idFiltrar + " CARGADOS ===");
@@ -45,7 +47,7 @@ public class Main {
                 break;
                 case 2:
                     System.out.println("Ingrede ID del evento: ");
-                    String idEvento = scanner.nextLine();
+                    String idEvento = scanner.nextLine().toUpperCase();
 
                     System.out.println("Ingrese su número de documento: ");
                     String doc = scanner.nextLine();
@@ -67,16 +69,27 @@ public class Main {
                     List<String> boletoSelected = new ArrayList<>();
                     for (int i = 0; i < cboletos; i++){
                         System.out.println("Ingrese el ID del asiento #" + (i+1) + " que desea comprar: ");
-                        boletoSelected.add(scanner.nextLine());
+                        boletoSelected.add(scanner.nextLine().toUpperCase());
                     }
 
                     String idGenerado = gestor.comprarAsientos(idEvento, doc, name, email, boletoSelected);
-                    System.out.println("================================2=");
+                    System.out.println("=================================");
                     System.out.println("¡Compra procesada con éxito!");
                     System.out.println("ID de compra: " + idGenerado);
                     System.out.println("Se ha generado su ticket.");
                     System.out.println("=================================");
                 break;
+                case 3:
+                    System.out.println("===== GENERANDO REPORTE GRÁFICO DE GANANCIAS =====");
+                    int b1 = GestorBoleteria.getCboletos1();
+                    int b2 = GestorBoleteria.getCboletos2();
+                    int b3 = GestorBoleteria.getCboletos3();
+                    Double g1 = GestorBoleteria.getGanancias1();
+                    Double g2 = GestorBoleteria.getGanancias2();
+                    Double g3 = GestorBoleteria.getGanancias3();
+
+                    GenerarReporte.generarTodosLosReportes(b1, b2, b3, g1, g2, g3);
+                    GenerarReporte.generarPDFReportes();
             }
             } catch (NumberFormatException e){
                 System.out.println("Debe ingresar un número valido: " + e.getMessage());

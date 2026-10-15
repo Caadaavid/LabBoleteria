@@ -125,8 +125,8 @@ public class Compra {
 
         try {
             mapper.writeValue(archivo, listaCompras);
-            GestionarLogs.registrarLog("INFO", "Compra " + nuevaCompra.getIdCompra()
-                    + "registrada correctamente en compras.json");
+            GestionarLogs.registrarLog("INFO", "Compra con ID " + nuevaCompra.getIdCompra()
+                    + " registrada correctamente en compras.json");
         } catch (Exception e){
             GestionarLogs.registrarLog("ERROR", "Error al escribir en compras.json"
                     + e.getMessage());
